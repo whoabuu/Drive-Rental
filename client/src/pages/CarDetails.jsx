@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { assets, dummyCarData } from '../assets/assets';
 import Loader from '../components/loader';
-import { useAppContext } from '../context/appContext';
+import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 import {motion} from 'motion/react'
 
