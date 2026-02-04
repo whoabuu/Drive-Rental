@@ -23,8 +23,13 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String, 
-        enum: ["owner", "user"], 
+        enum: ["owner", "user", "admin"], 
         default: "user"
+    },
+    ownerStatus: {
+        type: String,
+        enum: ['Not Applied', 'Pending', 'Approved', 'Rejected'],
+        default: 'Not Applied'
     },
     image:{
         type: String, 

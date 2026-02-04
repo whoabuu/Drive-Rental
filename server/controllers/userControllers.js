@@ -163,3 +163,24 @@ export const getCars = async(req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 }
+
+
+export const requestOwnerStatus = async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const user = await User.findById(_id);
+
+        if (user.ownerStatus === 'Pending' || user.ownerStatus === 'Approved') {
+            return res.json({ success: true, message: "A request has already been submitted." });
+        }
+
+        user.ownerStatus = 'Pending';
+        await user.save();
+
+        res.json({ success: true, message: "Your request to become an owner has been submitted and is pending review." });
+
+    } catch (error) {
+        console.log("REQUEST OWNER STATUS ERROR:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};

@@ -9,6 +9,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize'; 
 import xss from 'xss-clean'; 
+import adminRouter from './routes/adminRoutes.js';
 
 //initialise express app
 const app = express();
@@ -44,6 +45,7 @@ app.get('/', (req, res)=>{
 app.use("/api/user", userRouter);
 app.use("/api/owner", ownerRouter);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/admin", adminRouter);
 
 const PORT = process.env.PORT || 3000;
 

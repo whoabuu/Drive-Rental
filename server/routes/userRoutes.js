@@ -1,6 +1,7 @@
 import express from "express";
-import { forgotPassword, getCars, getUserData, loginUser, registerUser, resetPassword } from "../controllers/userControllers.js";
+import { forgotPassword, getCars, getUserData, loginUser, registerUser, requestOwnerStatus, resetPassword } from "../controllers/userControllers.js";
 import { protect } from "../middleware/auth.js";
+
 
 const userRouter = express.Router();
 
@@ -15,6 +16,8 @@ userRouter.post("/reset-password/:resetToken", resetPassword);
 userRouter.get("/data", protect, getUserData);
 
 userRouter.get("/cars", getCars);
+
+userRouter.post("/request-owner-role", protect, requestOwnerStatus);
 
 export default userRouter;
 

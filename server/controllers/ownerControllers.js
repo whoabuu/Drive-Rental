@@ -4,23 +4,6 @@ import Car from "../models/Car.js";
 import User from "../models/User.js";
 import fs from "fs/promises";
 
-
-export const changeRoleToOwner = async(req, res)=>{
-    try {
-        const {_id, role} = req.user;
-
-        if (role === "owner") {
-            return res.json({ success: true, message: "You are already registered as an owner." });
-        }
-
-        await User.findByIdAndUpdate(_id, {role: "owner"});
-        res.json({success: true, message: "Now you can list cars"});
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({success: false, message: error.message});
-    }
-}
-
 //API to List Car
 export const addCar = async (req, res) => {
     const tempFilePath = req.file?.path; 
