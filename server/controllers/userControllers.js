@@ -59,12 +59,10 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Please provide email and password.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Please provide email and password.",
+      });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -147,12 +145,10 @@ export const resetPassword = async (req, res) => {
     const { password } = req.body;
 
     if (!password || password.length < 8) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Password must be at least 8 characters long.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 8 characters long.",
+      });
     }
 
     const user = await User.findOne({
@@ -209,11 +205,14 @@ export const requestOwnerStatus = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    if (user.ownerStatus === "Pending" || user.ownerStatus === "Approved") {
+    if (user.ownerStatus === "Pending") {
       return res.json({
-        success: true,
-        message: "A request is already in progress.",
+        success: false,
+        message: "A request is already pending.",
       });
+    }
+    if (user.ownerStatus === "Approved") {
+      return res.json({ success: false, message: "You are already an owner." });
     }
 
     user.ownerStatus = "Pending";

@@ -3,19 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { assets, menuLinks } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
-import { motion } from "framer-motion"; // Changed from "motion/react" to avoid import issues
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const { setShowLogin, user, logout, axios, fetchUser } = useAppContext();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Function to handle the Owner Request (Supports Re-application)
   const requestToBeOwner = async () => {
     try {
       const { data } = await axios.post("/api/user/request-owner-role");
       if (data.success) {
         toast.success(data.message);
-        fetchUser();
+        fetchUser(); // Refresh user data to update 'Pending' status globally
       } else {
         toast.error(data.message);
       }
@@ -24,12 +25,9 @@ const Navbar = () => {
     }
   };
 
+  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = open ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -42,15 +40,17 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="flex justify-between items-center px-6 md:px-24 xl:px-32 py-4 text-xl text-gray-700 bg-[var(--color-primary)] border-b border-gray-300 sticky top-0 z-50 shadow-md"
     >
+      {/* Logo */}
       <Link to="/" onClick={() => setOpen(false)}>
         <motion.img
           whileHover={{ scale: 1.05 }}
           src={assets.logo}
           alt="logo"
-          className="h-12 w-auto"
+          className="h-12 w-auto cursor-pointer"
         />
       </Link>
 
+      {/* Navigation Links & Buttons */}
       <div
         className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16
             max-sm:border-t border-borderColor right-0 flex flex-col sm:flex-row
@@ -62,28 +62,44 @@ const Navbar = () => {
           <Link
             key={index}
             to={link.path}
-            className="hover:text-black transition-colors"
             onClick={() => setOpen(false)}
+            className="hover:text-black transition-colors"
           >
             {link.name}
           </Link>
         ))}
 
+        {/* Search Bar (Desktop) */}
+        <div className="hidden lg:flex items-center gap-2 text-sm border border-borderColor px-3 rounded-full max-w-56 bg-white/50">
+          <input
+            type="text"
+            className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
+            placeholder="Search available cars"
+          />
+          <img src={assets.search_icon} alt="search" className="h-4" />
+        </div>
+
         <div className="flex max-sm:flex-col items-start sm:items-center gap-6">
+          {/* Role-Based Action Button */}
           {user && (
             <button
               onClick={() => {
                 if (user.role === "admin") {
-                  navigate("/admin/owner-requests"); // Updated to match App.jsx route
+                  navigate("/admin/owner-requests");
                 } else if (user.role === "owner") {
                   navigate("/owner");
                 } else {
+                  // Handles 'Not Applied' or 'Rejected' states
                   requestToBeOwner();
                 }
                 setOpen(false);
               }}
               disabled={user.ownerStatus === "Pending"}
-              className="cursor-pointer disabled:cursor-not-allowed disabled:text-gray-400 font-medium"
+              className={`cursor-pointer font-medium transition-colors ${
+                user.ownerStatus === "Pending"
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-black hover:text-gray-600"
+              }`}
             >
               {user.role === "admin"
                 ? "Admin Panel"
@@ -91,22 +107,26 @@ const Navbar = () => {
                 ? "Owner Dashboard"
                 : user.ownerStatus === "Pending"
                 ? "Request Pending"
+                : user.ownerStatus === "Rejected"
+                ? "Rejected - Apply Again"
                 : "List your cars"}
             </button>
           )}
 
+          {/* Login / Logout Button */}
           <button
             onClick={() => {
               user ? logout() : setShowLogin(true);
               setOpen(false);
             }}
-            className="cursor-pointer px-8 py-2 bg-[var(--color-primary-dull)] hover:bg-gray-800 transition-all text-white rounded-lg shadow-md"
+            className="cursor-pointer px-8 py-2 bg-[var(--color-primary-dull)] hover:bg-gray-800 transition-all text-white rounded-lg shadow-md active:scale-95"
           >
             {user ? "Logout" : "Login"}
           </button>
         </div>
       </div>
 
+      {/* Mobile Menu Toggle */}
       <button
         className="sm:hidden cursor-pointer"
         aria-label="Menu"
@@ -116,8 +136,8 @@ const Navbar = () => {
       >
         <img
           src={open ? assets.close_icon : assets.menu_icon}
-          className="h-8"
           alt="menu"
+          className="h-8"
         />
       </button>
     </motion.div>
