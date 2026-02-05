@@ -12,11 +12,11 @@ const sendEmail = async (options) => {
 
     // 2. Define the email options
     const mailOptions = {
-        from: `DriveRental <${process.env.EMAIL_USER}>`,
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
-        
+      from: `DriveRental <${process.env.EMAIL_USER}>`,
+      to: options.email,
+      subject: options.subject,
+      text: options.message,
+      html: options.message,
     };
 
     // 3. Send the email
