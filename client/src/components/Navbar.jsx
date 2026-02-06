@@ -46,7 +46,7 @@ const Navbar = () => {
           whileHover={{ scale: 1.05 }}
           src={assets.logo}
           alt="logo"
-          className="h-12 w-auto cursor-pointer"
+          className="h-14 w-auto scale-180 cursor-pointer"
         />
       </Link>
 

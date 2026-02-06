@@ -27,7 +27,7 @@ const Hero = () => {
             <motion.h1 initial = {{y: 50, opacity: 0}}
                 animate = {{y: 0, opacity:1}}
                 transition={{duration: 0.6, delay:0.2}}
-                className="text-4xl md:text-5xl font-semibold">
+                className="text-5xl md:text-5xl font-semibold">
                   Rent Your Perfect Ride
             </motion.h1>
 
@@ -36,7 +36,7 @@ const Hero = () => {
             initial = {{scale:0.95, y: 50, opacity: 0}}
             animate = {{scale:1, y: 0, opacity:1}}
             transition={{duration: 0.6, delay:0.4}}
-            onSubmit={handleSearch} className="flex flex-col md:flex-row items-center justify-between p-6 rounded-3xl w-full max-w-4xl bg-white shadow-lg gap-6 md:gap-10">
+            onSubmit={handleSearch} className="flex flex-col md:flex-row items-center justify-between p-6 rounded-3xl w-full max-w-4xl h-30 bg-white shadow-lg gap-6 md:gap-10">
                 <div className="flex flex-col gap-2 w-full">
                     <label className="font-medium">Pickup Location</label>
                     <select

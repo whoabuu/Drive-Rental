@@ -8,7 +8,7 @@ const NewsLetter = () => {
     whileInView = {{opacity:1, y:0}}
     transition={{duration: 0.6,  ease:"easeOut"}}
     viewport={{once:true, amount:0.3}} 
-     className="flex flex-col items-center w-full max-w-5xl lg:w-full rounded-2xl px-4 py-12 md:py-16 mx-2 lg:mx-auto my-30 bg-black text-white">
+     className="flex flex-col items-center w-full max-w-5xl lg:w-full rounded-2xl px-4 py-12 md:py-16 mx-2 lg:mx-auto my-30 bg-black text-white ">
 
       <div className="flex flex-col justify-center items-center text-center">
 
